@@ -1,0 +1,6 @@
+tensorflow==2.4.1
+keras==2.4.0
+transformers==4.2.2
+numpy
+PySastrawi==1.2.0
+streamlit==0.80.0
