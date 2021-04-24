@@ -1,5 +1,38 @@
 from predictor import predict, load_model
 import streamlit as st
+import json, uuid
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+firebase_login_details = {
+  "type": st.secrets['TYPE'],
+  "project_id": st.secrets['PROJECT_ID'],
+  "private_key_id": st.secrets['PRIVATE_KEY_ID'],
+  "private_key": st.secrets['PRIVATE_KEY'],
+  "client_email": st.secrets['CLIENT_EMAIL'],
+  "client_id": st.secrets['CLIENT_ID'],
+  "auth_uri": st.secrets['AUTH_URI'],
+  "token_uri": st.secrets['TOKEN_URI'],
+  "auth_provider_x509_cert_url": st.secrets['AUTH_PROVIDER_CERT_URL'],
+  "client_x509_cert_url": st.secrets['CLIENT_CERT_URL'],
+}
+
+# save to file
+with open('firebase_login.json', 'w+') as output:
+	# dump to JSON
+	json.dump(firebase_login_details, output)
+
+# login to firebase
+# must check if already initialized
+# somehow streamlit loves to rerun the
+# code. idk why
+if not firebase_admin._apps:
+	cred = credentials.Certificate('firebase_login.json')
+	firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 # set page config
 st.set_page_config(
