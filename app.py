@@ -1,6 +1,6 @@
 from predictor import predict, load_model
 import streamlit as st
-import json, uuid
+import json, uuid, asyncio
 
 import firebase_admin
 from firebase_admin import credentials
@@ -70,6 +70,12 @@ def handle_prediction(text, prediction):
 
 	return pred_ids
 
+def handle_feedback(uuid, feedback):
+	db.collection('feedback').add({
+		'id': uuid,
+		'is_correct': feedback
+	})
+
 # title and subtitle
 st.title("Painless Way to Detect Clickbait 😎")
 st.write("Do you think your favorite news portal is credible, trustworthy, and not using clickbait?")
@@ -95,3 +101,20 @@ if news_title != "":
 		st.write(f"NOOOO! It's a clickbait 😱😱. We're {round(prediction, 3)}% sure it's a clickbait")
 	else:
 		st.write(f"YAY! It's not a clickbait 🥰🥰. We're {round(100-prediction, 3)}% sure it's not a clickbait")
+
+	feedbackSection = st.empty()
+
+	with feedbackSection.beta_container():
+		st.subheader("Do you think this is correct?")
+		st.write("Your input will be used to retrain the AI later. Therefore we can get more accurate prediction, it's a win-win 😁")
+
+		# button
+		col1, col2 = st.beta_columns([.3, 1])
+		if col1.button("Yup, it's correct"):
+			handle_feedback(pred_ids, 1)
+
+			feedbackSection.write("Thanks for your input! 🤩")
+		elif col2.button("Nope, it's incorrect."):
+			handle_feedback(pred_ids, 0)
+
+			feedbackSection.write("Thanks for your input! 🤩")
