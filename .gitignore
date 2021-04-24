@@ -1,3 +1,5 @@
 model
 .vscode
 __pycache__
+.streamlit
+firebase_login.json
