@@ -46,7 +46,29 @@ with st.spinner("Loading our awesome ML model. Please wait ..."):
 
 @st.cache
 def handle_text(text):
-	return predict(model, text)
+	# predict
+	prediction = predict(model, text)
+
+	# save to firebase
+	pred_ids = handle_prediction(text, prediction)
+
+	# return
+	return [prediction, pred_ids]
+
+def handle_prediction(text, prediction):
+	# convert to 0 (not a clickbait) or 1 (clickbait)
+	prediction = 1 if prediction > 50 else 0
+
+	# generate prediction id
+	pred_ids = str(uuid.uuid4())
+
+	db.collection('prediction').add({
+		'id': pred_ids,
+		'text': text,
+		'prediction': prediction
+	})
+
+	return pred_ids
 
 # title and subtitle
 st.title("Painless Way to Detect Clickbait 😎")
@@ -61,12 +83,15 @@ news_title = st.text_area(
 )
 
 if news_title != "":
-	prediction = handle_text(news_title)
+	result = handle_text(news_title)
+	prediction = result[0]
+	pred_ids = result[1]
+
+	# display prediction
+	st.subheader("AI thinks that ...")
 
 	# check prediction
 	if prediction > 50:
-		st.write("NOOOO! It's a clickbait 😱😱")
-		st.write(f"We're {round(prediction, 3)}% sure it's a clickbait")
+		st.write(f"NOOOO! It's a clickbait 😱😱. We're {round(prediction, 3)}% sure it's a clickbait")
 	else:
-		st.write("YAY! It's not a clickbait 🥰🥰")
-		st.write(f"We're {round(100-prediction, 3)}% sure it's not a clickbait")
+		st.write(f"YAY! It's not a clickbait 🥰🥰. We're {round(100-prediction, 3)}% sure it's not a clickbait")
