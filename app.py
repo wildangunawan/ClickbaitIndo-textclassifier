@@ -41,7 +41,7 @@ st.set_page_config(
 )
 
 # load model
-with st.spinner("Loading our awesome ML model. Please wait ..."):
+with st.spinner("Loading our awesome AI 🤩. Please wait ..."):
 	model = load_model()
 
 @st.cache
@@ -79,7 +79,7 @@ def handle_feedback(uuid, feedback):
 # title and subtitle
 st.title("Painless Way to Detect Clickbait 😎")
 st.write("Do you think your favorite news portal is credible, trustworthy, and not using clickbait?")
-st.write("Well, just ask the machine if they think so 😆")
+st.write("Well, just ask the AI if they think so 😆")
 st.write("It's easy and (hopefully 😛) fast. Put news' title down below and we will take care the rest 😉")
 
 # user input
