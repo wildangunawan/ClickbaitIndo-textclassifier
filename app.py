@@ -17,11 +17,14 @@ def handle_text(text):
 
 # title and subtitle
 st.title("Painless Way to Detect Clickbait 😎")
+st.write("Do you think your favorite news portal is credible, trustworthy, and not using clickbait?")
+st.write("Well, just ask the machine if they think so 😆")
 st.write("It's easy and (hopefully 😛) fast. Put news' title down below and we will take care the rest 😉")
 
 # user input
-news_title = st.text_input(
-	label='News Title:'
+news_title = st.text_area(
+	label="News Title:",
+	help="Input your news' title here, then click anywhere outside the box. We'll take care the rest 😀"
 )
 
 if news_title != "":
