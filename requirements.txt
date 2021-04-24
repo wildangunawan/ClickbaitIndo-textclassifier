@@ -4,4 +4,3 @@ transformers==4.2.2
 numpy
 PySastrawi==1.2.0
 streamlit==0.80.0
-google_drive_downloader

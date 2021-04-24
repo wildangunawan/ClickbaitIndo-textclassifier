@@ -28,8 +28,8 @@ def load_model():
 	# file exists?
 	if not os.path.exists(filepath):
 		# download file
-		from google_drive_downloader import GoogleDriveDownloader as gdd
-		gdd.download_file_from_google_drive(file_id='1Q_kmdoYtNc6urHCq-ysCmIBdDviMBdVb', dest_path=filepath)
+		from gd_download import download_file_from_google_drive
+		download_file_from_google_drive(id='1Q_kmdoYtNc6urHCq-ysCmIBdDviMBdVb', destination=filepath)
 	
 	# load model
 	model = keras.models.load_model(filepath)
